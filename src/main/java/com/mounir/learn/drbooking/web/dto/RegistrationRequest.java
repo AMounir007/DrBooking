@@ -24,7 +24,9 @@ public class RegistrationRequest {
     @Pattern(regexp = "[a-z0-9-]{3,80}", message = "Use lowercase letters, numbers and dashes only")
     private String slug;
 
-    private String zoneId = "UTC";
+    private String zoneId = "Africa/Cairo";
+
+    private String language = "ar";
 
     public String getDisplayName() { return displayName; }
     public void setDisplayName(String displayName) { this.displayName = displayName; }
@@ -43,4 +45,7 @@ public class RegistrationRequest {
 
     public String getZoneId() { return zoneId; }
     public void setZoneId(String zoneId) { this.zoneId = zoneId; }
+
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
 }

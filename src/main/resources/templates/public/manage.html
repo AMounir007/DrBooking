@@ -1,33 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Your appointment')}"></head>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      th:dir="${#locale.language == 'ar'} ? 'rtl' : 'ltr'">
+<head th:replace="~{fragments/layout :: head(#{manage.title})}"></head>
 <body>
 <header th:replace="~{fragments/layout :: header}"></header>
 
 <main class="container section" style="max-width:600px">
-    <div class="alert success" th:if="${param.created}">
-        Your appointment is confirmed. A confirmation message has been sent to you.
-    </div>
-    <div class="alert info" th:if="${param.cancelled}">Your appointment has been cancelled.</div>
+    <div class="alert success" th:if="${param.created}" th:text="#{manage.created}"></div>
+    <div class="alert info" th:if="${param.cancelled}" th:text="#{manage.cancelled}"></div>
 
     <div class="card">
-        <h1>Appointment details</h1>
+        <h1 th:text="#{manage.title}">Appointment details</h1>
         <table>
-            <tr><th>Provider</th><td th:text="${provider.displayName}"></td></tr>
-            <tr><th>When</th>
-                <td th:text="${#temporals.format(localStart, 'EEEE dd MMMM yyyy - HH:mm')} + ' (' + ${provider.zoneId} + ')'"></td></tr>
-            <tr><th>Name</th><td th:text="${booking.customerName}"></td></tr>
-            <tr><th>Phone</th><td th:text="${booking.customerPhone}"></td></tr>
-            <tr><th>Reference</th><td th:text="${booking.reference}"></td></tr>
-            <tr><th>Status</th>
-                <td><span class="badge" th:classappend="${booking.status}" th:text="${booking.status}"></span></td></tr>
+            <tr><th th:text="#{manage.provider}">Provider</th><td th:text="${provider.displayName}"></td></tr>
+            <tr><th th:text="#{manage.when}">When</th>
+                <td th:text="${#temporals.format(localStart, 'EEEE dd MMMM yyyy - HH:mm', #locale)} + ' (' + ${provider.zoneId} + ')'"></td></tr>
+            <tr><th th:text="#{manage.name}">Name</th><td th:text="${booking.customerName}"></td></tr>
+            <tr><th th:text="#{manage.phone}">Phone</th><td class="ltr" th:text="${booking.customerPhone}"></td></tr>
+            <tr><th th:text="#{manage.reference}">Reference</th><td class="ltr" th:text="${booking.reference}"></td></tr>
+            <tr><th th:text="#{manage.status}">Status</th>
+                <td><span class="badge" th:classappend="${booking.status}" th:text="#{'status.' + ${booking.status}}"></span></td></tr>
         </table>
 
         <form th:if="${booking.active}" th:action="@{'/booking/' + ${booking.reference} + '/cancel'}" method="post"
-              onsubmit="return confirm('Cancel this appointment?');">
-            <button class="btn danger" type="submit">Cancel appointment</button>
+              th:attr="onsubmit=|return confirm('${#messages.msg('manage.cancel.confirm')}');|">
+            <button class="btn danger" type="submit" th:text="#{manage.cancel}">Cancel appointment</button>
         </form>
-        <a class="btn secondary" th:href="@{'/' + ${provider.slug}}">Book another time</a>
+        <a class="btn secondary" th:href="@{'/' + ${provider.slug}}" th:text="#{manage.another}">Book another time</a>
     </div>
 </main>
 

@@ -1,5 +1,6 @@
 package com.mounir.learn.drbooking.web;
 
+import com.mounir.learn.drbooking.config.ZoneCatalog;
 import com.mounir.learn.drbooking.domain.Plan;
 import com.mounir.learn.drbooking.service.BookingException;
 import com.mounir.learn.drbooking.service.ProviderService;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.ZoneId;
 import java.util.List;
 
 @Controller
@@ -64,8 +64,6 @@ public class HomeController {
     }
 
     private List<String> zones() {
-        return List.of("UTC", "Africa/Cairo", "Europe/London", "Europe/Paris", "Europe/Berlin",
-                        "Asia/Dubai", "Asia/Riyadh", "Asia/Kolkata", "America/New_York", "America/Los_Angeles")
-                .stream().filter(z -> ZoneId.getAvailableZoneIds().contains(z)).toList();
+        return ZoneCatalog.zones();
     }
 }

@@ -4,29 +4,33 @@
 <head th:fragment="head(title)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:text="${title} + ' | DrBooking'">DrBooking</title>
+    <title th:text="${title} + ' | ' + #{app.name}">DrBooking</title>
     <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
 
 <header class="site" th:fragment="header">
     <div class="container inner">
-        <a class="brand" th:href="@{/}">Dr<span>Booking</span></a>
+        <a class="brand" th:href="@{/}" th:text="#{app.name}">DrBooking</a>
         <nav>
-            <a th:href="@{/pricing}">Pricing</a>
-            <a sec:authorize="isAuthenticated()" th:href="@{/dashboard}">Dashboard</a>
-            <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Log in</a>
-            <a sec:authorize="!isAuthenticated()" class="btn small" th:href="@{/register}">Start free</a>
+            <a th:href="@{/pricing}" th:text="#{nav.pricing}">Pricing</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/dashboard}" th:text="#{nav.dashboard}">Dashboard</a>
+            <a sec:authorize="!isAuthenticated()" th:href="@{/login}" th:text="#{nav.login}">Log in</a>
+            <a sec:authorize="!isAuthenticated()" class="btn small" th:href="@{/register}" th:text="#{nav.start}">Start free</a>
             <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="display:inline">
-                <button class="btn small secondary" type="submit">Log out</button>
+                <button class="btn small secondary" type="submit" th:text="#{nav.logout}">Log out</button>
             </form>
+            <span class="lang-switch">
+                <a th:if="${#locale.language != 'ar'}" th:href="@{${switchUrl}(lang='ar')}" th:text="#{lang.arabic}">العربية</a>
+                <a th:if="${#locale.language == 'ar'}" th:href="@{${switchUrl}(lang='en')}" th:text="#{lang.english}">English</a>
+            </span>
         </nav>
     </div>
 </header>
 
 <footer class="site" th:fragment="footer">
-    <div class="container">
-        DrBooking &mdash; booking &amp; scheduling platform. Fewer no-shows, zero double bookings.
+    <div class="container" th:text="#{footer.text}">
+        DrBooking
     </div>
 </footer>
 

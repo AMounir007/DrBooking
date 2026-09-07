@@ -29,18 +29,19 @@ public class DemoDataLoader {
                 return;
             }
             RegistrationRequest request = new RegistrationRequest();
-            request.setDisplayName("Dr. Ahmed");
-            request.setBusinessName("Ahmed Family Clinic");
+            request.setDisplayName("د. أحمد");
+            request.setBusinessName("عيادة أحمد للأسرة");
             request.setEmail("dr.ahmed@example.com");
             request.setPassword("password123");
             request.setSlug("dr-ahmed");
             request.setZoneId("Africa/Cairo");
+            request.setLanguage("ar");
 
             Provider provider = providerService.register(request);
             provider.setPlan(Plan.PRO);
             provider.setSlotMinutes(30);
             provider.setWhatsappNumber("201234567890");
-            provider.setDescription("General practitioner - consultations, follow-ups and check-ups.");
+            provider.setDescription("طبيب عام - كشف ومتابعة وفحوصات دورية.");
             providerService.save(provider);
 
             log.info("Demo provider ready -> http://localhost:8080/dr-ahmed (login dr.ahmed@example.com / password123)");

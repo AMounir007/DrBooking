@@ -52,6 +52,7 @@ public class ProviderService {
         provider.setEmail(request.getEmail().toLowerCase());
         provider.setSlug(request.getSlug().toLowerCase());
         provider.setZoneId(request.getZoneId());
+        provider.setLanguage(request.getLanguage() == null ? "ar" : request.getLanguage());
         provider.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         Provider saved = providerRepository.save(provider);
 
@@ -82,6 +83,7 @@ public class ProviderService {
         provider.setBusinessName(form.getBusinessName());
         provider.setWhatsappNumber(form.getWhatsappNumber());
         provider.setZoneId(form.getZoneId());
+        provider.setLanguage(form.getLanguage() == null ? "ar" : form.getLanguage());
         provider.setSlotMinutes(form.getSlotMinutes());
         provider.setBufferMinutes(form.getBufferMinutes());
         provider.setBookingHorizonDays(form.getBookingHorizonDays());

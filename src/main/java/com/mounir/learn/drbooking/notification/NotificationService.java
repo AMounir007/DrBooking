@@ -5,6 +5,7 @@ import com.mounir.learn.drbooking.domain.Booking;
 import com.mounir.learn.drbooking.domain.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -12,41 +13,36 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * Builds and dispatches confirmation / reminder / cancellation messages.
+ * Builds and dispatches confirmation / reminder / cancellation messages
+ * in the provider's chosen language (Arabic by default).
  */
 @Service
 public class NotificationService {
 
     private static final Logger log = LoggerFactory.getLogger(NotificationService.class);
-    private static final DateTimeFormatter FORMAT =
-            DateTimeFormatter.ofPattern("EEEE dd MMM yyyy 'at' HH:mm", Locale.ENGLISH);
 
     private final EmailChannel emailChannel;
     private final WhatsAppChannel whatsAppChannel;
     private final AppProperties properties;
+    private final MessageSource messages;
 
-    public NotificationService(EmailChannel emailChannel, WhatsAppChannel whatsAppChannel, AppProperties properties) {
+    public NotificationService(EmailChannel emailChannel,
+                               WhatsAppChannel whatsAppChannel,
+                               AppProperties properties,
+                               MessageSource messages) {
         this.emailChannel = emailChannel;
         this.whatsAppChannel = whatsAppChannel;
         this.properties = properties;
+        this.messages = messages;
     }
 
     @Async
     public void sendConfirmation(Booking booking) {
         Provider provider = booking.getProvider();
-        String subject = "Appointment confirmed with " + provider.getDisplayName();
-        String body = """
-                Hello %s,
+        Locale locale = provider.locale();
 
-                Your appointment with %s is confirmed.
-
-                When: %s (%s)
-                Reference: %s
-
-                Manage or cancel your booking: %s
-
-                See you soon!
-                """.formatted(
+        String subject = msg("notify.confirm.subject", locale, provider.getDisplayName());
+        String body = msg("notify.confirm.body", locale,
                 booking.getCustomerName(),
                 provider.getDisplayName(),
                 formatFor(booking),
@@ -56,30 +52,24 @@ public class NotificationService {
 
         dispatchToCustomer(booking, subject, body);
 
-        // Notify the provider as well.
         emailChannel.send(provider.getEmail(),
-                "New booking: " + booking.getCustomerName(),
-                "%s booked %s (%s). Phone: %s".formatted(
+                msg("notify.provider.new.subject", locale, booking.getCustomerName()),
+                msg("notify.provider.new.body", locale,
                         booking.getCustomerName(), formatFor(booking),
                         provider.getZoneId(), booking.getCustomerPhone()));
     }
 
     @Async
     public void sendReminder(Booking booking, int hoursBefore) {
-        String subject = "Reminder: appointment in %d hours".formatted(hoursBefore);
-        String body = """
-                Hello %s,
+        Provider provider = booking.getProvider();
+        Locale locale = provider.locale();
 
-                This is a reminder for your appointment with %s.
-
-                When: %s (%s)
-
-                Please confirm or cancel here: %s
-                """.formatted(
+        String subject = msg("notify.reminder.subject", locale, hoursBefore);
+        String body = msg("notify.reminder.body", locale,
                 booking.getCustomerName(),
-                booking.getProvider().getDisplayName(),
+                provider.getDisplayName(),
                 formatFor(booking),
-                booking.getProvider().getZoneId(),
+                provider.getZoneId(),
                 manageLink(booking));
 
         dispatchToCustomer(booking, subject, body);
@@ -87,23 +77,20 @@ public class NotificationService {
 
     @Async
     public void sendCancellation(Booking booking) {
-        String subject = "Appointment cancelled";
-        String body = """
-                Hello %s,
+        Provider provider = booking.getProvider();
+        Locale locale = provider.locale();
 
-                Your appointment with %s on %s has been cancelled.
-
-                You can book a new time here: %s/%s
-                """.formatted(
+        String subject = msg("notify.cancel.subject", locale);
+        String body = msg("notify.cancel.body", locale,
                 booking.getCustomerName(),
-                booking.getProvider().getDisplayName(),
+                provider.getDisplayName(),
                 formatFor(booking),
-                properties.getBaseUrl(),
-                booking.getProvider().getSlug());
+                properties.getBaseUrl() + "/" + provider.getSlug());
 
         dispatchToCustomer(booking, subject, body);
-        emailChannel.send(booking.getProvider().getEmail(), "Booking cancelled",
-                "%s cancelled the appointment of %s.".formatted(booking.getCustomerName(), formatFor(booking)));
+        emailChannel.send(provider.getEmail(),
+                msg("notify.provider.cancel.subject", locale),
+                msg("notify.provider.cancel.body", locale, booking.getCustomerName(), formatFor(booking)));
     }
 
     private void dispatchToCustomer(Booking booking, String subject, String body) {
@@ -122,11 +109,19 @@ public class NotificationService {
         }
     }
 
+    private String msg(String key, Locale locale, Object... args) {
+        return messages.getMessage(key, args, key, locale);
+    }
+
     private String manageLink(Booking booking) {
         return "%s/booking/%s".formatted(properties.getBaseUrl(), booking.getReference());
     }
 
+    /** Formats the appointment date in the provider's zone and language. */
     private String formatFor(Booking booking) {
-        return FORMAT.format(booking.getStartAt().atZone(booking.getProvider().zone()));
+        Provider provider = booking.getProvider();
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("EEEE dd MMMM yyyy - HH:mm", provider.locale());
+        return formatter.format(booking.getStartAt().atZone(provider.zone()));
     }
 }

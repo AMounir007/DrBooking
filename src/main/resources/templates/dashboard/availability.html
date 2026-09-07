@@ -1,29 +1,36 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Availability')}"></head>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      th:dir="${#locale.language == 'ar'} ? 'rtl' : 'ltr'">
+<head th:replace="~{fragments/layout :: head(#{avail.title})}"></head>
 <body>
 <header th:replace="~{fragments/layout :: header}"></header>
 
 <main class="container section">
     <div class="row-flex" style="justify-content:space-between">
-        <h1>Availability</h1>
-        <a class="btn secondary" th:href="@{/dashboard}">Back to dashboard</a>
+        <h1 th:text="#{avail.title}">Availability</h1>
+        <a class="btn secondary" th:href="@{/dashboard}" th:text="#{avail.back}">Back to dashboard</a>
     </div>
 
-    <div class="alert success" th:if="${param.saved}">Working hours saved.</div>
-    <div class="alert success" th:if="${param.blocked}">Time block added.</div>
+    <div class="alert success" th:if="${param.saved}" th:text="#{avail.saved}"></div>
+    <div class="alert success" th:if="${param.blocked}" th:text="#{avail.blocked}"></div>
 
     <div class="card">
-        <h2>Weekly working hours</h2>
-        <p class="muted" th:text="'All times are in ' + ${provider.zoneId}"></p>
+        <h2 th:text="#{avail.weekly}">Weekly working hours</h2>
+        <p class="muted" th:text="#{avail.alltimes(${provider.zoneId})}"></p>
         <form th:action="@{/dashboard/availability}" th:object="${hoursForm}" method="post">
             <table>
                 <thead>
-                <tr><th>Day</th><th>Open</th><th>From</th><th>To</th></tr>
+                <tr>
+                    <th th:text="#{avail.th.day}">Day</th>
+                    <th th:text="#{avail.th.open}">Open</th>
+                    <th th:text="#{avail.th.from}">From</th>
+                    <th th:text="#{avail.th.to}">To</th>
+                </tr>
                 </thead>
                 <tbody>
                 <tr th:each="row, it : *{rows}">
-                    <td th:text="${row.dayOfWeek}">MONDAY</td>
+                    <td th:text="#{'day.' + ${row.dayOfWeek}}">Monday</td>
                     <td>
                         <input type="checkbox" th:field="*{rows[__${it.index}__].enabled}">
                     </td>
@@ -33,43 +40,49 @@
                 </tr>
                 </tbody>
             </table>
-            <button class="btn" type="submit" style="margin-top:14px">Save working hours</button>
+            <button class="btn" type="submit" style="margin-top:14px" th:text="#{avail.save}">Save working hours</button>
         </form>
     </div>
 
     <div class="card" style="margin-top:20px">
-        <h2>Blocked time (holidays, personal events)</h2>
-        <p class="muted">Anything blocked here disappears from your public booking page. This is also where
-            events imported from Google Calendar / Outlook land.</p>
+        <h2 th:text="#{avail.block.title}">Blocked time</h2>
+        <p class="muted" th:text="#{avail.block.desc}"></p>
 
         <form th:action="@{/dashboard/time-off}" method="post" class="grid grid-2">
             <div>
-                <label for="start">From</label>
+                <label for="start" th:text="#{avail.block.from}">From</label>
                 <input type="datetime-local" id="start" name="start" required>
             </div>
             <div>
-                <label for="end">To</label>
+                <label for="end" th:text="#{avail.block.to}">To</label>
                 <input type="datetime-local" id="end" name="end" required>
             </div>
             <div>
-                <label for="reason">Reason</label>
-                <input type="text" id="reason" name="reason" placeholder="Conference, day off...">
+                <label for="reason" th:text="#{avail.block.reason}">Reason</label>
+                <input type="text" id="reason" name="reason" th:placeholder="#{avail.block.reason.ph}">
             </div>
             <div style="align-self:end">
-                <button class="btn" type="submit" style="margin-bottom:14px">Block this period</button>
+                <button class="btn" type="submit" style="margin-bottom:14px" th:text="#{avail.block.add}">Block this period</button>
             </div>
         </form>
 
         <table th:unless="${timeOffs.isEmpty()}">
-            <thead><tr><th>From</th><th>To</th><th>Reason</th><th></th></tr></thead>
+            <thead>
+            <tr>
+                <th th:text="#{avail.block.from}">From</th>
+                <th th:text="#{avail.block.to}">To</th>
+                <th th:text="#{avail.block.reason}">Reason</th>
+                <th></th>
+            </tr>
+            </thead>
             <tbody>
             <tr th:each="t : ${timeOffs}">
-                <td th:text="${#temporals.format(t.startAt.atZone(provider.zone()), 'dd MMM yyyy HH:mm')}"></td>
-                <td th:text="${#temporals.format(t.endAt.atZone(provider.zone()), 'dd MMM yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(t.startAt.atZone(provider.zone()), 'dd MMM yyyy HH:mm', #locale)}"></td>
+                <td th:text="${#temporals.format(t.endAt.atZone(provider.zone()), 'dd MMM yyyy HH:mm', #locale)}"></td>
                 <td th:text="${t.reason}"></td>
                 <td>
                     <form th:action="@{'/dashboard/time-off/' + ${t.id} + '/delete'}" method="post">
-                        <button class="btn small danger" type="submit">Remove</button>
+                        <button class="btn small danger" type="submit" th:text="#{avail.block.remove}">Remove</button>
                     </form>
                 </td>
             </tr>

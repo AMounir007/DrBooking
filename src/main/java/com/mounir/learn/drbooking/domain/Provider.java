@@ -47,7 +47,11 @@ public class Provider {
     private String whatsappNumber;
 
     @Column(length = 60)
-    private String zoneId = "UTC";
+    private String zoneId = "Africa/Cairo";
+
+    /** Language used for messages sent to this provider and their customers (ar / en). */
+    @Column(nullable = false, length = 10)
+    private String language = "ar";
 
     /** Length of a single bookable slot, in minutes. */
     @Column(nullable = false)
@@ -78,8 +82,13 @@ public class Provider {
         try {
             return ZoneId.of(zoneId);
         } catch (Exception e) {
-            return ZoneId.of("UTC");
+            return ZoneId.of("Africa/Cairo");
         }
+    }
+
+    /** Locale used to render notifications for this provider. */
+    public java.util.Locale locale() {
+        return "en".equalsIgnoreCase(language) ? java.util.Locale.ENGLISH : java.util.Locale.forLanguageTag("ar-EG");
     }
 
     public Long getId() { return id; }
@@ -105,6 +114,9 @@ public class Provider {
 
     public String getZoneId() { return zoneId; }
     public void setZoneId(String zoneId) { this.zoneId = zoneId; }
+
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
 
     public int getSlotMinutes() { return slotMinutes; }
     public void setSlotMinutes(int slotMinutes) { this.slotMinutes = slotMinutes; }

@@ -1,6 +1,7 @@
 package com.mounir.learn.drbooking.web;
 
 import com.mounir.learn.drbooking.config.AppProperties;
+import com.mounir.learn.drbooking.config.ZoneCatalog;
 import com.mounir.learn.drbooking.domain.Booking;
 import com.mounir.learn.drbooking.domain.BookingStatus;
 import com.mounir.learn.drbooking.domain.Provider;

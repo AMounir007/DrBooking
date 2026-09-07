@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      th:dir="${#locale.language == 'ar'} ? 'rtl' : 'ltr'">
 <head th:replace="~{fragments/layout :: head(${provider.displayName})}"></head>
 <body>
 <header th:replace="~{fragments/layout :: header}"></header>
@@ -10,19 +12,20 @@
         <p class="muted" th:if="${provider.businessName}" th:text="${provider.businessName}"></p>
         <p th:if="${provider.description}" th:text="${provider.description}"></p>
         <p class="muted">
-            Appointment length: <b th:text="${provider.slotMinutes} + ' min'"></b> &middot;
-            Time zone: <b th:text="${provider.zoneId}"></b>
+            <span th:text="#{booking.length}"></span>:
+            <b th:text="#{booking.minutes(${provider.slotMinutes})}"></b> &middot;
+            <span th:text="#{booking.timezone}"></span>:
+            <b class="ltr" th:text="${provider.zoneId}"></b>
         </p>
     </div>
 
-
-    <h2>1. Pick a day</h2>
+    <h2 th:text="#{booking.step1}">1. Pick a day</h2>
     <div class="day-strip">
         <a th:each="d : ${days}"
            th:href="@{'/' + ${provider.slug}(date=${d})}"
            th:classappend="${d == selectedDate} ? 'active' : ''">
-            <span th:text="${#temporals.format(d, 'EEE')}">Mon</span><br>
-            <b th:text="${#temporals.format(d, 'dd MMM')}">01 Jan</b>
+            <span th:text="${#temporals.format(d, 'EEE', #locale)}">Mon</span><br>
+            <b th:text="${#temporals.format(d, 'dd MMM', #locale)}">01 Jan</b>
         </a>
     </div>
 
@@ -31,8 +34,8 @@
             <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
         </div>
 
-        <h2>2. Pick a time</h2>
-        <p class="muted" th:if="${slots.isEmpty()}">No free slots for this day. Please choose another date.</p>
+        <h2 th:text="#{booking.step2}">2. Pick a time</h2>
+        <p class="muted" th:if="${slots.isEmpty()}" th:text="#{booking.noslots}"></p>
         <div class="slot-grid" th:unless="${slots.isEmpty()}">
             <label class="slot" th:each="entry : ${slots}">
                 <input type="radio" th:field="*{start}" th:value="${entry.key}" required>
@@ -40,28 +43,28 @@
             </label>
         </div>
 
-        <h2 style="margin-top:26px">3. Your details</h2>
+        <h2 style="margin-top:26px" th:text="#{booking.step3}">3. Your details</h2>
         <div class="card">
             <div class="grid grid-2">
                 <div>
-                    <label for="customerName">Full name *</label>
+                    <label for="customerName" th:text="#{booking.name}">Full name *</label>
                     <input type="text" id="customerName" th:field="*{customerName}">
                     <div class="error-text" th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}"></div>
                 </div>
                 <div>
-                    <label for="customerPhone">Phone (WhatsApp) *</label>
-                    <input type="text" id="customerPhone" th:field="*{customerPhone}" placeholder="+20 100 000 0000">
+                    <label for="customerPhone" th:text="#{booking.phone}">Phone *</label>
+                    <input type="text" id="customerPhone" class="ltr" th:field="*{customerPhone}" placeholder="+20 100 000 0000">
                     <div class="error-text" th:if="${#fields.hasErrors('customerPhone')}" th:errors="*{customerPhone}"></div>
                 </div>
             </div>
-            <label for="customerEmail">E-mail (for the confirmation)</label>
-            <input type="email" id="customerEmail" th:field="*{customerEmail}">
+            <label for="customerEmail" th:text="#{booking.email}">E-mail</label>
+            <input type="email" id="customerEmail" class="ltr" th:field="*{customerEmail}">
             <div class="error-text" th:if="${#fields.hasErrors('customerEmail')}" th:errors="*{customerEmail}"></div>
 
-            <label for="notes">Reason for the visit (optional)</label>
+            <label for="notes" th:text="#{booking.notes}">Reason for the visit</label>
             <textarea id="notes" rows="3" th:field="*{notes}"></textarea>
 
-            <button class="btn" type="submit" th:disabled="${slots.isEmpty()}">Confirm booking</button>
+            <button class="btn" type="submit" th:disabled="${slots.isEmpty()}" th:text="#{booking.confirm}">Confirm booking</button>
         </div>
     </form>
 </main>

@@ -1,0 +1,195 @@
+# ---------- Common / layout ----------
+app.name=دكتور بوكينج
+nav.pricing=الأسعار
+nav.dashboard=لوحة التحكم
+nav.login=تسجيل الدخول
+nav.start=ابدأ مجاناً
+nav.logout=تسجيل الخروج
+footer.text=دكتور بوكينج - منصة الحجز وجدولة المواعيد. مواعيد ملغاة أقل، وبدون تعارض في الحجوزات.
+lang.arabic=العربية
+lang.english=English
+
+# ---------- Home ----------
+home.title=الحجز وجدولة المواعيد ببساطة
+home.hero.title=توقف عن مطاردة المواعيد.
+home.hero.subtitle=شارك رابطاً واحداً، ودع عملاءك يختارون الموعد المتاح، وسيتولى دكتور بوكينج إرسال التأكيدات والتذكيرات نيابة عنك. لا حجوزات مزدوجة، وعدد أقل بكثير من المواعيد الملغاة.
+home.cta.create=أنشئ صفحة الحجز الخاصة بك
+home.cta.example=شاهد مثالاً مباشراً
+home.f1.title=صفحة حجز شخصية
+home.f1.text=رابط خاص بك مثل /dr-ahmed. يرى العملاء المواعيد المتاحة فعلياً فقط، ويحجزون في أقل من دقيقة.
+home.f2.title=تذكيرات تلقائية
+home.f2.text=تأكيد فوري بالإضافة إلى تذكيرات قبل الموعد بـ 24 ساعة وبساعتين عبر البريد الإلكتروني أو واتساب.
+home.f3.title=بدون تعارض
+home.f3.text=يتم تطبيق ساعات العمل والفواصل الزمنية وفترات الإجازة تلقائياً، لذا لا يمكن حجز الموعد مرتين أبداً.
+home.plans.title=الباقات
+
+# ---------- Plans ----------
+plan.FREE=مجانية
+plan.BASIC=أساسية
+plan.PRO=احترافية
+plan.upto=حتى {0} حجز شهرياً
+plan.unlimited=حجوزات غير محدودة
+plan.email.yes=تذكيرات بالبريد الإلكتروني
+plan.email.no=رسالة تأكيد بالبريد فقط
+plan.whatsapp.yes=تذكيرات واتساب + المدفوعات
+plan.whatsapp.no=بدون تذكيرات واتساب
+plan.choose=اختر
+
+# ---------- Pricing ----------
+pricing.title=أسعار بسيطة
+pricing.subtitle=ابدأ مجاناً، وقم بالترقية عندما يمتلئ جدولك.
+pricing.month=/شهرياً
+pricing.free.f1=حتى 20 حجزاً شهرياً
+pricing.free.f2=صفحة حجز شخصية
+pricing.free.f3=رسائل تأكيد بالبريد الإلكتروني
+pricing.free.cta=ابدأ مجاناً
+pricing.basic.f1=حجوزات غير محدودة
+pricing.basic.f2=تذكيرات بالبريد (24 ساعة وساعتين)
+pricing.basic.f3=حجب أوقات الإجازات
+pricing.basic.cta=اختر الباقة الأساسية
+pricing.pro.f1=كل مزايا الباقة الأساسية
+pricing.pro.f2=تذكيرات واتساب
+pricing.pro.f3=العرابين والمدفوعات الإلكترونية (عمولة 1%)
+pricing.pro.f4=دعم عدة موظفين
+pricing.pro.cta=اختر الباقة الاحترافية
+
+# ---------- Login ----------
+login.title=تسجيل الدخول
+login.email=البريد الإلكتروني
+login.password=كلمة المرور
+login.submit=تسجيل الدخول
+login.error=البريد الإلكتروني أو كلمة المرور غير صحيحة.
+login.registered=تم إنشاء الحساب. يرجى تسجيل الدخول.
+login.noaccount=ليس لديك حساب؟
+login.create=أنشئ حساباً
+login.demo=حساب تجريبي: dr.ahmed@example.com / password123
+
+# ---------- Register ----------
+register.title=أنشئ صفحة الحجز الخاصة بك
+register.name=اسمك
+register.business=اسم النشاط (اختياري)
+register.link=رابط الحجز الخاص بك
+register.timezone=المنطقة الزمنية
+register.language=لغة الإشعارات
+register.email=البريد الإلكتروني
+register.password=كلمة المرور
+register.submit=أنشئ صفحتي
+
+# ---------- Public booking ----------
+booking.length=مدة الموعد
+booking.minutes={0} دقيقة
+booking.timezone=المنطقة الزمنية
+booking.step1=1. اختر اليوم
+booking.step2=2. اختر الوقت
+booking.step3=3. بياناتك
+booking.noslots=لا توجد مواعيد متاحة في هذا اليوم. يرجى اختيار تاريخ آخر.
+booking.name=الاسم بالكامل *
+booking.phone=رقم الهاتف (واتساب) *
+booking.email=البريد الإلكتروني (لإرسال التأكيد)
+booking.notes=سبب الزيارة (اختياري)
+booking.confirm=تأكيد الحجز
+
+# ---------- Manage booking ----------
+manage.title=تفاصيل الموعد
+manage.created=تم تأكيد موعدك. تم إرسال رسالة تأكيد إليك.
+manage.cancelled=تم إلغاء موعدك.
+manage.provider=مقدم الخدمة
+manage.when=الموعد
+manage.name=الاسم
+manage.phone=رقم الهاتف
+manage.reference=الرقم المرجعي
+manage.status=الحالة
+manage.cancel=إلغاء الموعد
+manage.cancel.confirm=هل تريد إلغاء هذا الموعد؟
+manage.another=احجز موعداً آخر
+
+# ---------- Booking status ----------
+status.PENDING=قيد الانتظار
+status.CONFIRMED=مؤكد
+status.CANCELLED=ملغي
+status.COMPLETED=مكتمل
+status.NO_SHOW=لم يحضر
+
+# ---------- Dashboard ----------
+dash.title=لوحة التحكم
+dash.hello=مرحباً، {0}
+dash.availability=المواعيد المتاحة
+dash.settings=الإعدادات
+dash.link=رابط الحجز العام الخاص بك
+dash.copy=نسخ
+dash.open=فتح
+dash.last30=الحجوزات (آخر 30 يوماً)
+dash.plan=الباقة: {0}
+dash.confirmedweek=المؤكدة هذا الأسبوع
+dash.cancelledweek=الملغاة هذا الأسبوع
+dash.upcoming=المواعيد القادمة
+dash.none=لا توجد مواعيد قادمة بعد. شارك رابطك!
+dash.th.when=الموعد
+dash.th.customer=العميل
+dash.th.phone=رقم الهاتف
+dash.th.status=الحالة
+dash.th.actions=إجراءات
+dash.save=حفظ
+
+# ---------- Availability ----------
+avail.title=المواعيد المتاحة
+avail.back=العودة إلى لوحة التحكم
+avail.saved=تم حفظ ساعات العمل.
+avail.blocked=تمت إضافة فترة محجوبة.
+avail.weekly=ساعات العمل الأسبوعية
+avail.alltimes=جميع الأوقات بتوقيت {0}
+avail.th.day=اليوم
+avail.th.open=مفتوح
+avail.th.from=من
+avail.th.to=إلى
+avail.save=حفظ ساعات العمل
+avail.block.title=الأوقات المحجوبة (الإجازات والمناسبات الشخصية)
+avail.block.desc=أي فترة تحجبها هنا تختفي من صفحة الحجز العامة. وهنا أيضاً تظهر المواعيد المستوردة من تقويم جوجل أو أوتلوك.
+avail.block.from=من
+avail.block.to=إلى
+avail.block.reason=السبب
+avail.block.reason.ph=مؤتمر، يوم إجازة...
+avail.block.add=احجب هذه الفترة
+avail.block.remove=حذف
+
+# ---------- Days ----------
+day.MONDAY=الاثنين
+day.TUESDAY=الثلاثاء
+day.WEDNESDAY=الأربعاء
+day.THURSDAY=الخميس
+day.FRIDAY=الجمعة
+day.SATURDAY=السبت
+day.SUNDAY=الأحد
+
+# ---------- Settings ----------
+settings.title=الإعدادات
+settings.saved=تم حفظ الإعدادات.
+settings.displayName=الاسم الظاهر
+settings.businessName=اسم النشاط
+settings.whatsapp=رقم واتساب (بالصيغة الدولية)
+settings.timezone=المنطقة الزمنية
+settings.language=لغة الإشعارات
+settings.slotlen=مدة الموعد (بالدقائق)
+settings.buffer=الفاصل بين المواعيد
+settings.horizon=كم يوماً مسبقاً يمكن للعملاء الحجز؟
+settings.description=وصف مختصر يظهر في صفحتك
+settings.save=حفظ الإعدادات
+settings.calendar.title=مزامنة التقويم
+settings.calendar.desc=يقوم الربط مع تقويم جوجل وأوتلوك بنقل المواعيد الخارجية إلى قائمة الأوقات المحجوبة، بحيث يزيل أي حدث شخصي الموعد تلقائياً من صفحة الحجز.
+settings.calendar.connect=ربط تقويم جوجل (قريباً)
+
+# ---------- Errors ----------
+error.title=عذراً
+error.back=العودة إلى الرئيسية
+
+# ---------- Notifications ----------
+notify.confirm.subject=تم تأكيد موعدك مع {0}
+notify.confirm.body=مرحباً {0}،\n\nتم تأكيد موعدك مع {1}.\n\nالموعد: {2} ({3})\nالرقم المرجعي: {4}\n\nلإدارة الحجز أو إلغائه: {5}\n\nنراك قريباً!
+notify.reminder.subject=تذكير: موعدك بعد {0} ساعة
+notify.reminder.body=مرحباً {0}،\n\nهذا تذكير بموعدك مع {1}.\n\nالموعد: {2} ({3})\n\nيرجى التأكيد أو الإلغاء من هنا: {4}
+notify.cancel.subject=تم إلغاء الموعد
+notify.cancel.body=مرحباً {0}،\n\nتم إلغاء موعدك مع {1} بتاريخ {2}.\n\nيمكنك حجز موعد جديد من هنا: {3}
+notify.provider.new.subject=حجز جديد: {0}
+notify.provider.new.body=قام {0} بحجز موعد {1} ({2}). رقم الهاتف: {3}
+notify.provider.cancel.subject=تم إلغاء حجز
+notify.provider.cancel.body=قام {0} بإلغاء موعد {1}.

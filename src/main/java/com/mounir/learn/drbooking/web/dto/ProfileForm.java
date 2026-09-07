@@ -14,7 +14,9 @@ public class ProfileForm {
     private String whatsappNumber;
 
     @NotBlank
-    private String zoneId;
+    private String zoneId = "Africa/Cairo";
+
+    private String language = "ar";
 
     @Min(5)
     @Max(480)
@@ -41,6 +43,9 @@ public class ProfileForm {
 
     public String getZoneId() { return zoneId; }
     public void setZoneId(String zoneId) { this.zoneId = zoneId; }
+
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
 
     public int getSlotMinutes() { return slotMinutes; }
     public void setSlotMinutes(int slotMinutes) { this.slotMinutes = slotMinutes; }

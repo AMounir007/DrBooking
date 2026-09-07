@@ -1,44 +1,46 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Pricing')}"></head>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      th:dir="${#locale.language == 'ar'} ? 'rtl' : 'ltr'">
+<head th:replace="~{fragments/layout :: head(#{pricing.title})}"></head>
 <body>
 <header th:replace="~{fragments/layout :: header}"></header>
 
 <main class="container section">
-    <h1>Simple pricing</h1>
-    <p class="muted">Start free, upgrade when your calendar fills up.</p>
+    <h1 th:text="#{pricing.title}">Simple pricing</h1>
+    <p class="muted" th:text="#{pricing.subtitle}"></p>
 
     <div class="grid grid-3">
         <div class="card">
-            <h3>Free</h3>
+            <h3 th:text="#{plan.FREE}">Free</h3>
             <p class="stat">$0</p>
             <ul class="muted">
-                <li>Up to 20 bookings / month</li>
-                <li>Personal booking page</li>
-                <li>Confirmation e-mails</li>
+                <li th:text="#{pricing.free.f1}"></li>
+                <li th:text="#{pricing.free.f2}"></li>
+                <li th:text="#{pricing.free.f3}"></li>
             </ul>
-            <a class="btn" th:href="@{/register}">Start free</a>
+            <a class="btn" th:href="@{/register}" th:text="#{pricing.free.cta}">Start free</a>
         </div>
         <div class="card">
-            <h3>Basic</h3>
-            <p class="stat">$15<span class="muted">/mo</span></p>
+            <h3 th:text="#{plan.BASIC}">Basic</h3>
+            <p class="stat">$15<span class="muted" th:text="#{pricing.month}">/mo</span></p>
             <ul class="muted">
-                <li>Unlimited bookings</li>
-                <li>E-mail reminders (24h &amp; 2h)</li>
-                <li>Time-off blocking</li>
+                <li th:text="#{pricing.basic.f1}"></li>
+                <li th:text="#{pricing.basic.f2}"></li>
+                <li th:text="#{pricing.basic.f3}"></li>
             </ul>
-            <a class="btn" th:href="@{/register}">Choose Basic</a>
+            <a class="btn" th:href="@{/register}" th:text="#{pricing.basic.cta}">Choose Basic</a>
         </div>
         <div class="card">
-            <h3>Pro</h3>
-            <p class="stat">$39<span class="muted">/mo</span></p>
+            <h3 th:text="#{plan.PRO}">Pro</h3>
+            <p class="stat">$39<span class="muted" th:text="#{pricing.month}">/mo</span></p>
             <ul class="muted">
-                <li>Everything in Basic</li>
-                <li>WhatsApp reminders</li>
-                <li>Deposits &amp; online payments (1% fee)</li>
-                <li>Multiple staff members</li>
+                <li th:text="#{pricing.pro.f1}"></li>
+                <li th:text="#{pricing.pro.f2}"></li>
+                <li th:text="#{pricing.pro.f3}"></li>
+                <li th:text="#{pricing.pro.f4}"></li>
             </ul>
-            <a class="btn" th:href="@{/register}">Choose Pro</a>
+            <a class="btn" th:href="@{/register}" th:text="#{pricing.pro.cta}">Choose Pro</a>
         </div>
     </div>
 </main>

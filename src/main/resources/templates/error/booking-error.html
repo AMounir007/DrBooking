@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Something went wrong')}"></head>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      th:dir="${#locale.language == 'ar'} ? 'rtl' : 'ltr'">
+<head th:replace="~{fragments/layout :: head(#{error.title})}"></head>
 <body>
 <header th:replace="~{fragments/layout :: header}"></header>
 
 <main class="container section" style="max-width:520px">
     <div class="card">
-        <h1>Oops</h1>
+        <h1 th:text="#{error.title}">Oops</h1>
         <p class="muted" th:text="${message}">Booking not found.</p>
-        <a class="btn" th:href="@{/}">Back to home</a>
+        <a class="btn" th:href="@{/}" th:text="#{error.back}">Back to home</a>
     </div>
 </main>
 

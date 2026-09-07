@@ -1,68 +1,76 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      th:dir="${#locale.language == 'ar'} ? 'rtl' : 'ltr'">
+<head th:replace="~{fragments/layout :: head(#{dash.title})}"></head>
 <body>
 <header th:replace="~{fragments/layout :: header}"></header>
 
 <main class="container section">
     <div class="row-flex" style="justify-content:space-between">
-        <h1>Hello, <span th:text="${provider.displayName}"></span></h1>
+        <h1 th:text="#{dash.hello(${provider.displayName})}">Hello</h1>
         <div class="row-flex">
-            <a class="btn secondary" th:href="@{/dashboard/availability}">Availability</a>
-            <a class="btn secondary" th:href="@{/dashboard/settings}">Settings</a>
+            <a class="btn secondary" th:href="@{/dashboard/availability}" th:text="#{dash.availability}">Availability</a>
+            <a class="btn secondary" th:href="@{/dashboard/settings}" th:text="#{dash.settings}">Settings</a>
         </div>
     </div>
 
     <div class="card">
-        <label>Your public booking link</label>
+        <label th:text="#{dash.link}">Your public booking link</label>
         <div class="row-flex">
-            <input type="text" id="link" th:value="${bookingLink}" readonly style="margin-bottom:0">
-            <button class="btn small" type="button" onclick="copyLink()">Copy</button>
-            <a class="btn small secondary" th:href="${bookingLink}" target="_blank">Open</a>
+            <input type="text" id="link" class="ltr" th:value="${bookingLink}" readonly style="margin-bottom:0">
+            <button class="btn small" type="button" onclick="copyLink()" th:text="#{dash.copy}">Copy</button>
+            <a class="btn small secondary" th:href="${bookingLink}" target="_blank" th:text="#{dash.open}">Open</a>
         </div>
     </div>
 
     <div class="grid grid-3 section">
         <div class="card">
-            <p class="muted">Bookings (last 30 days)</p>
+            <p class="muted" th:text="#{dash.last30}">Bookings (last 30 days)</p>
             <p class="stat" th:text="${last30}">0</p>
-            <p class="muted" th:text="'Plan: ' + ${plan.label}"></p>
+            <p class="muted" th:text="#{dash.plan(#{'plan.' + ${plan.name()}})}"></p>
         </div>
         <div class="card">
-            <p class="muted">Confirmed this week</p>
+            <p class="muted" th:text="#{dash.confirmedweek}">Confirmed this week</p>
             <p class="stat" th:text="${statusCounts.getOrDefault(T(com.mounir.learn.drbooking.domain.BookingStatus).CONFIRMED, 0)}">0</p>
         </div>
         <div class="card">
-            <p class="muted">Cancelled this week</p>
+            <p class="muted" th:text="#{dash.cancelledweek}">Cancelled this week</p>
             <p class="stat" th:text="${statusCounts.getOrDefault(T(com.mounir.learn.drbooking.domain.BookingStatus).CANCELLED, 0)}">0</p>
         </div>
     </div>
 
-    <h2>Upcoming appointments</h2>
+    <h2 th:text="#{dash.upcoming}">Upcoming appointments</h2>
     <div class="card">
-        <p class="muted" th:if="${upcoming.isEmpty()}">No upcoming appointments yet. Share your link!</p>
+        <p class="muted" th:if="${upcoming.isEmpty()}" th:text="#{dash.none}"></p>
         <table th:unless="${upcoming.isEmpty()}">
             <thead>
-            <tr><th>When</th><th>Customer</th><th>Phone</th><th>Status</th><th>Actions</th></tr>
+            <tr>
+                <th th:text="#{dash.th.when}">When</th>
+                <th th:text="#{dash.th.customer}">Customer</th>
+                <th th:text="#{dash.th.phone}">Phone</th>
+                <th th:text="#{dash.th.status}">Status</th>
+                <th th:text="#{dash.th.actions}">Actions</th>
+            </tr>
             </thead>
             <tbody>
             <tr th:each="b : ${upcoming}">
-                <td th:text="${#temporals.format(b.startAt.atZone(zone), 'EEE dd MMM - HH:mm')}"></td>
+                <td th:text="${#temporals.format(b.startAt.atZone(zone), 'EEE dd MMM - HH:mm', #locale)}"></td>
                 <td>
                     <span th:text="${b.customerName}"></span><br>
                     <span class="muted" th:text="${b.notes}"></span>
                 </td>
-                <td th:text="${b.customerPhone}"></td>
-                <td><span class="badge" th:classappend="${b.status}" th:text="${b.status}"></span></td>
+                <td class="ltr" th:text="${b.customerPhone}"></td>
+                <td><span class="badge" th:classappend="${b.status}" th:text="#{'status.' + ${b.status}}"></span></td>
                 <td>
                     <form th:action="@{'/dashboard/bookings/' + ${b.id} + '/status'}" method="post" class="row-flex">
                         <select name="status" style="margin-bottom:0">
-                            <option value="CONFIRMED">Confirmed</option>
-                            <option value="COMPLETED">Completed</option>
-                            <option value="NO_SHOW">No-show</option>
-                            <option value="CANCELLED">Cancelled</option>
+                            <option value="CONFIRMED" th:text="#{status.CONFIRMED}">Confirmed</option>
+                            <option value="COMPLETED" th:text="#{status.COMPLETED}">Completed</option>
+                            <option value="NO_SHOW" th:text="#{status.NO_SHOW}">No-show</option>
+                            <option value="CANCELLED" th:text="#{status.CANCELLED}">Cancelled</option>
                         </select>
-                        <button class="btn small" type="submit">Save</button>
+                        <button class="btn small" type="submit" th:text="#{dash.save}">Save</button>
                     </form>
                 </td>
             </tr>

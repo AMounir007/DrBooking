@@ -6,9 +6,15 @@ target/
 ### Application runtime ###
 data/
 *.log
-gitinfo.txt
-cfg.txt
-out.txt
+
+### Local scratch / diagnostics ###
+st.txt
+res.txt
+errs.txt
+fails.txt
+enc-report.txt
+scan-report.txt
+convert-report.txt
 
 ### IntelliJ IDEA ###
 .idea/

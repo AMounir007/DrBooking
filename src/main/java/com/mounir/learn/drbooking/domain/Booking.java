@@ -17,7 +17,12 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    /**
+     * Always loaded together with the booking: rendering the manage page and sending
+     * notifications (including from the async reminder scheduler) both need it, and a
+     * lazy proxy would throw LazyInitializationException once the loading transaction closes.
+     */
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
 

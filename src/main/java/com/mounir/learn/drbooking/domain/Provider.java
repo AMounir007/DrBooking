@@ -50,7 +50,7 @@ public class Provider {
     private String zoneId = "Africa/Cairo";
 
     /** Language used for messages sent to this provider and their customers (ar / en). */
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 10, columnDefinition = "varchar(10) default 'ar'")
     private String language = "ar";
 
     /** Length of a single bookable slot, in minutes. */

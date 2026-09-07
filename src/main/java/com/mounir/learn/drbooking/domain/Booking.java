@@ -52,6 +52,22 @@ public class Booking {
     @Column(nullable = false, length = 20)
     private BookingStatus status = BookingStatus.CONFIRMED;
 
+    /** Who last changed {@link #status} - lets the provider answer "who confirmed / cancelled this?". */
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private BookingActor statusChangedBy;
+
+    /** Display name of the actor above, e.g. the provider's name or the customer's name. */
+    @Column(length = 120)
+    private String statusChangedByName;
+
+    /** When {@link #status} was last changed. */
+    private Instant statusChangedAt;
+
+    /** Optional free-text reason captured when a provider cancels or marks a no-show. */
+    @Column(length = 300)
+    private String statusChangeReason;
+
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal depositAmount = BigDecimal.ZERO;
 
@@ -96,6 +112,30 @@ public class Booking {
 
     public BookingStatus getStatus() { return status; }
     public void setStatus(BookingStatus status) { this.status = status; }
+
+    public BookingActor getStatusChangedBy() { return statusChangedBy; }
+    public void setStatusChangedBy(BookingActor statusChangedBy) { this.statusChangedBy = statusChangedBy; }
+
+    public String getStatusChangedByName() { return statusChangedByName; }
+    public void setStatusChangedByName(String statusChangedByName) { this.statusChangedByName = statusChangedByName; }
+
+    public Instant getStatusChangedAt() { return statusChangedAt; }
+    public void setStatusChangedAt(Instant statusChangedAt) { this.statusChangedAt = statusChangedAt; }
+
+    public String getStatusChangeReason() { return statusChangeReason; }
+    public void setStatusChangeReason(String statusChangeReason) { this.statusChangeReason = statusChangeReason; }
+
+    /**
+     * Moves this booking to a new status and records who did it and when, in one place,
+     * so the audit trail can never be forgotten by a caller.
+     */
+    public void changeStatus(BookingStatus newStatus, BookingActor actor, String actorName, String reason, Instant now) {
+        this.status = newStatus;
+        this.statusChangedBy = actor;
+        this.statusChangedByName = actorName;
+        this.statusChangeReason = reason;
+        this.statusChangedAt = now;
+    }
 
     public BigDecimal getDepositAmount() { return depositAmount; }
     public void setDepositAmount(BigDecimal depositAmount) { this.depositAmount = depositAmount; }

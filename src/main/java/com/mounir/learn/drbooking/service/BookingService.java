@@ -65,8 +65,8 @@ public class BookingService {
         booking.setNotes(request.getNotes());
         booking.setStartAt(start);
         booking.setEndAt(end);
-        booking.setStatus(BookingStatus.CONFIRMED);
         booking.setCreatedAt(Instant.now(clock));
+        booking.changeStatus(BookingStatus.CONFIRMED, BookingActor.SYSTEM, null, null, Instant.now(clock));
 
         Booking saved = bookingRepository.save(booking);
         notificationService.sendConfirmation(saved);

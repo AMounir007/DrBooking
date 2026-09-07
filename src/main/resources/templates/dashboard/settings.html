@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Settings')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main class="container section" style="max-width:640px">
+    <div class="row-flex" style="justify-content:space-between">
+        <h1>Settings</h1>
+        <a class="btn secondary" th:href="@{/dashboard}">Back to dashboard</a>
+    </div>
+
+    <div class="alert success" th:if="${param.saved}">Settings saved.</div>
+
+    <div class="card">
+        <form th:action="@{/dashboard/settings}" th:object="${profileForm}" method="post">
+            <label for="displayName">Display name</label>
+            <input type="text" id="displayName" th:field="*{displayName}">
+
+            <label for="businessName">Business name</label>
+            <input type="text" id="businessName" th:field="*{businessName}">
+
+            <label for="whatsappNumber">WhatsApp number (international format)</label>
+            <input type="text" id="whatsappNumber" th:field="*{whatsappNumber}" placeholder="201234567890">
+
+            <label for="zoneId">Time zone</label>
+            <select id="zoneId" th:field="*{zoneId}">
+                <option th:each="z : ${zones}" th:value="${z}" th:text="${z}"></option>
+            </select>
+
+            <div class="grid grid-2">
+                <div>
+                    <label for="slotMinutes">Appointment length (minutes)</label>
+                    <input type="number" id="slotMinutes" th:field="*{slotMinutes}" min="5" max="480">
+                </div>
+                <div>
+                    <label for="bufferMinutes">Buffer between appointments</label>
+                    <input type="number" id="bufferMinutes" th:field="*{bufferMinutes}" min="0" max="240">
+                </div>
+            </div>
+
+            <label for="bookingHorizonDays">How many days ahead can clients book?</label>
+            <input type="number" id="bookingHorizonDays" th:field="*{bookingHorizonDays}" min="1" max="365">
+
+            <label for="description">Short description shown on your page</label>
+            <textarea id="description" rows="3" th:field="*{description}"></textarea>
+
+            <button class="btn" type="submit">Save settings</button>
+        </form>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+        <h3>Calendar synchronisation</h3>
+        <p class="muted">Google Calendar and Outlook connections push external events into your blocked
+            time list, so a personal event automatically removes the slot from your booking page.</p>
+        <button class="btn secondary" type="button" disabled>Connect Google Calendar (coming soon)</button>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

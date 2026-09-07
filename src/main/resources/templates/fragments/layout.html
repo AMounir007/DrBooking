@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' | DrBooking'">DrBooking</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<header class="site" th:fragment="header">
+    <div class="container inner">
+        <a class="brand" th:href="@{/}">Dr<span>Booking</span></a>
+        <nav>
+            <a th:href="@{/pricing}">Pricing</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/dashboard}">Dashboard</a>
+            <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Log in</a>
+            <a sec:authorize="!isAuthenticated()" class="btn small" th:href="@{/register}">Start free</a>
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="display:inline">
+                <button class="btn small secondary" type="submit">Log out</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<footer class="site" th:fragment="footer">
+    <div class="container">
+        DrBooking &mdash; booking &amp; scheduling platform. Fewer no-shows, zero double bookings.
+    </div>
+</footer>
+
+</body>
+</html>

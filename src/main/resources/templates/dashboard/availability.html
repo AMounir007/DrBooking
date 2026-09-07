@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Availability')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main class="container section">
+    <div class="row-flex" style="justify-content:space-between">
+        <h1>Availability</h1>
+        <a class="btn secondary" th:href="@{/dashboard}">Back to dashboard</a>
+    </div>
+
+    <div class="alert success" th:if="${param.saved}">Working hours saved.</div>
+    <div class="alert success" th:if="${param.blocked}">Time block added.</div>
+
+    <div class="card">
+        <h2>Weekly working hours</h2>
+        <p class="muted" th:text="'All times are in ' + ${provider.zoneId}"></p>
+        <form th:action="@{/dashboard/availability}" th:object="${hoursForm}" method="post">
+            <table>
+                <thead>
+                <tr><th>Day</th><th>Open</th><th>From</th><th>To</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="row, it : *{rows}">
+                    <td th:text="${row.dayOfWeek}">MONDAY</td>
+                    <td>
+                        <input type="checkbox" th:field="*{rows[__${it.index}__].enabled}">
+                    </td>
+                    <td><input type="time" th:field="*{rows[__${it.index}__].startTime}" style="margin-bottom:0"></td>
+                    <td><input type="time" th:field="*{rows[__${it.index}__].endTime}" style="margin-bottom:0"></td>
+                    <input type="hidden" th:field="*{rows[__${it.index}__].dayOfWeek}">
+                </tr>
+                </tbody>
+            </table>
+            <button class="btn" type="submit" style="margin-top:14px">Save working hours</button>
+        </form>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+        <h2>Blocked time (holidays, personal events)</h2>
+        <p class="muted">Anything blocked here disappears from your public booking page. This is also where
+            events imported from Google Calendar / Outlook land.</p>
+
+        <form th:action="@{/dashboard/time-off}" method="post" class="grid grid-2">
+            <div>
+                <label for="start">From</label>
+                <input type="datetime-local" id="start" name="start" required>
+            </div>
+            <div>
+                <label for="end">To</label>
+                <input type="datetime-local" id="end" name="end" required>
+            </div>
+            <div>
+                <label for="reason">Reason</label>
+                <input type="text" id="reason" name="reason" placeholder="Conference, day off...">
+            </div>
+            <div style="align-self:end">
+                <button class="btn" type="submit" style="margin-bottom:14px">Block this period</button>
+            </div>
+        </form>
+
+        <table th:unless="${timeOffs.isEmpty()}">
+            <thead><tr><th>From</th><th>To</th><th>Reason</th><th></th></tr></thead>
+            <tbody>
+            <tr th:each="t : ${timeOffs}">
+                <td th:text="${#temporals.format(t.startAt.atZone(provider.zone()), 'dd MMM yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(t.endAt.atZone(provider.zone()), 'dd MMM yyyy HH:mm')}"></td>
+                <td th:text="${t.reason}"></td>
+                <td>
+                    <form th:action="@{'/dashboard/time-off/' + ${t.id} + '/delete'}" method="post">
+                        <button class="btn small danger" type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Create your booking page')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main class="container section" style="max-width:560px">
+    <div class="card">
+        <h1>Create your booking page</h1>
+
+        <form th:action="@{/register}" th:object="${form}" method="post">
+            <div class="alert error" th:if="${#fields.hasGlobalErrors()}">
+                <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
+            </div>
+
+            <label for="displayName">Your name</label>
+            <input type="text" id="displayName" th:field="*{displayName}" placeholder="Dr. Ahmed">
+            <div class="error-text" th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}"></div>
+
+            <label for="businessName">Business name (optional)</label>
+            <input type="text" id="businessName" th:field="*{businessName}" placeholder="Ahmed Family Clinic">
+
+            <label for="slug">Your booking link</label>
+            <input type="text" id="slug" th:field="*{slug}" placeholder="dr-ahmed">
+            <div class="error-text" th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}"></div>
+
+            <label for="zoneId">Time zone</label>
+            <select id="zoneId" th:field="*{zoneId}">
+                <option th:each="z : ${zones}" th:value="${z}" th:text="${z}"></option>
+            </select>
+
+            <label for="email">E-mail</label>
+            <input type="email" id="email" th:field="*{email}">
+            <div class="error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" th:field="*{password}">
+            <div class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+            <button class="btn" type="submit">Create my page</button>
+        </form>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

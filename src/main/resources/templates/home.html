@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Booking and scheduling made simple')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main class="container">
+    <section class="hero">
+        <h1>Stop chasing appointments.</h1>
+        <p>
+            Share one link, let your clients pick a free slot, and let DrBooking send the
+            confirmations and reminders for you. No double bookings, far fewer no-shows.
+        </p>
+        <div class="row-flex" style="justify-content:center">
+            <a class="btn" th:href="@{/register}">Create your booking page</a>
+            <a class="btn secondary" th:href="@{/dr-ahmed}">See a live example</a>
+        </div>
+    </section>
+
+    <section class="grid grid-3 section">
+        <div class="card">
+            <h3>Personal booking page</h3>
+            <p class="muted">Your own link such as <code>/dr-ahmed</code>. Clients see only the times you
+                are really free and book in under a minute.</p>
+        </div>
+        <div class="card">
+            <h3>Automatic reminders</h3>
+            <p class="muted">Instant confirmation plus reminders 24 hours and 2 hours before the
+                appointment by e-mail or WhatsApp.</p>
+        </div>
+        <div class="card">
+            <h3>No conflicts</h3>
+            <p class="muted">Working hours, buffers and personal time-off blocks are applied
+                automatically, so a slot can never be booked twice.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Plans</h2>
+        <div class="grid grid-3">
+            <div class="card" th:each="plan : ${plans}">
+                <h3 th:text="${plan.label}">Plan</h3>
+                <p class="muted">
+                    <span th:if="${plan.monthlyBookingLimit < 1000000}"
+                          th:text="'Up to ' + ${plan.monthlyBookingLimit} + ' bookings / month'"></span>
+                    <span th:if="${plan.monthlyBookingLimit >= 1000000}">Unlimited bookings</span>
+                </p>
+                <ul class="muted">
+                    <li th:text="${plan.emailReminders} ? 'E-mail reminders' : 'Confirmation e-mail only'"></li>
+                    <li th:text="${plan.whatsappReminders} ? 'WhatsApp reminders + payments' : 'No WhatsApp reminders'"></li>
+                </ul>
+                <a class="btn" th:href="@{/register}">Choose</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

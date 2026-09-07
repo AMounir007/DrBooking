@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Something went wrong')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main class="container section" style="max-width:520px">
+    <div class="card">
+        <h1>Oops</h1>
+        <p class="muted" th:text="${message}">Booking not found.</p>
+        <a class="btn" th:href="@{/}">Back to home</a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

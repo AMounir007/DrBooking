@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Pricing')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main class="container section">
+    <h1>Simple pricing</h1>
+    <p class="muted">Start free, upgrade when your calendar fills up.</p>
+
+    <div class="grid grid-3">
+        <div class="card">
+            <h3>Free</h3>
+            <p class="stat">$0</p>
+            <ul class="muted">
+                <li>Up to 20 bookings / month</li>
+                <li>Personal booking page</li>
+                <li>Confirmation e-mails</li>
+            </ul>
+            <a class="btn" th:href="@{/register}">Start free</a>
+        </div>
+        <div class="card">
+            <h3>Basic</h3>
+            <p class="stat">$15<span class="muted">/mo</span></p>
+            <ul class="muted">
+                <li>Unlimited bookings</li>
+                <li>E-mail reminders (24h &amp; 2h)</li>
+                <li>Time-off blocking</li>
+            </ul>
+            <a class="btn" th:href="@{/register}">Choose Basic</a>
+        </div>
+        <div class="card">
+            <h3>Pro</h3>
+            <p class="stat">$39<span class="muted">/mo</span></p>
+            <ul class="muted">
+                <li>Everything in Basic</li>
+                <li>WhatsApp reminders</li>
+                <li>Deposits &amp; online payments (1% fee)</li>
+                <li>Multiple staff members</li>
+            </ul>
+            <a class="btn" th:href="@{/register}">Choose Pro</a>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

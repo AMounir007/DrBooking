@@ -1,0 +1,53 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: DrBooking
+  datasource:
+    url: jdbc:h2:file:./data/drbooking;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  thymeleaf:
+    cache: false
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${MAIL_AUTH:false}
+      mail.smtp.starttls.enable: ${MAIL_TLS:false}
+      mail.smtp.connectiontimeout: 3000
+      mail.smtp.timeout: 3000
+      mail.smtp.writetimeout: 3000
+
+app:
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  mail-from: ${APP_MAIL_FROM:no-reply@drbooking.local}
+  whatsapp:
+    enabled: ${WHATSAPP_ENABLED:false}
+    api-url: ${WHATSAPP_API_URL:}
+    access-token: ${WHATSAPP_TOKEN:}
+  reminders:
+    enabled: true
+    first-reminder-hours: 24
+    second-reminder-hours: 2
+  demo-data: true
+
+logging:
+  level:
+    com.mounir.learn.drbooking: INFO

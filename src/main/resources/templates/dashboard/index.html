@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main class="container section">
+    <div class="row-flex" style="justify-content:space-between">
+        <h1>Hello, <span th:text="${provider.displayName}"></span></h1>
+        <div class="row-flex">
+            <a class="btn secondary" th:href="@{/dashboard/availability}">Availability</a>
+            <a class="btn secondary" th:href="@{/dashboard/settings}">Settings</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <label>Your public booking link</label>
+        <div class="row-flex">
+            <input type="text" id="link" th:value="${bookingLink}" readonly style="margin-bottom:0">
+            <button class="btn small" type="button" onclick="copyLink()">Copy</button>
+            <a class="btn small secondary" th:href="${bookingLink}" target="_blank">Open</a>
+        </div>
+    </div>
+
+    <div class="grid grid-3 section">
+        <div class="card">
+            <p class="muted">Bookings (last 30 days)</p>
+            <p class="stat" th:text="${last30}">0</p>
+            <p class="muted" th:text="'Plan: ' + ${plan.label}"></p>
+        </div>
+        <div class="card">
+            <p class="muted">Confirmed this week</p>
+            <p class="stat" th:text="${statusCounts.getOrDefault(T(com.mounir.learn.drbooking.domain.BookingStatus).CONFIRMED, 0)}">0</p>
+        </div>
+        <div class="card">
+            <p class="muted">Cancelled this week</p>
+            <p class="stat" th:text="${statusCounts.getOrDefault(T(com.mounir.learn.drbooking.domain.BookingStatus).CANCELLED, 0)}">0</p>
+        </div>
+    </div>
+
+    <h2>Upcoming appointments</h2>
+    <div class="card">
+        <p class="muted" th:if="${upcoming.isEmpty()}">No upcoming appointments yet. Share your link!</p>
+        <table th:unless="${upcoming.isEmpty()}">
+            <thead>
+            <tr><th>When</th><th>Customer</th><th>Phone</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="b : ${upcoming}">
+                <td th:text="${#temporals.format(b.startAt.atZone(zone), 'EEE dd MMM - HH:mm')}"></td>
+                <td>
+                    <span th:text="${b.customerName}"></span><br>
+                    <span class="muted" th:text="${b.notes}"></span>
+                </td>
+                <td th:text="${b.customerPhone}"></td>
+                <td><span class="badge" th:classappend="${b.status}" th:text="${b.status}"></span></td>
+                <td>
+                    <form th:action="@{'/dashboard/bookings/' + ${b.id} + '/status'}" method="post" class="row-flex">
+                        <select name="status" style="margin-bottom:0">
+                            <option value="CONFIRMED">Confirmed</option>
+                            <option value="COMPLETED">Completed</option>
+                            <option value="NO_SHOW">No-show</option>
+                            <option value="CANCELLED">Cancelled</option>
+                        </select>
+                        <button class="btn small" type="submit">Save</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script>
+    function copyLink() {
+        const el = document.getElementById('link');
+        el.select();
+        navigator.clipboard.writeText(el.value);
+    }
+</script>
+</body>
+</html>

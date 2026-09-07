@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${provider.displayName})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main class="container section">
+    <div class="card">
+        <h1 th:text="${provider.displayName}">Dr. Ahmed</h1>
+        <p class="muted" th:if="${provider.businessName}" th:text="${provider.businessName}"></p>
+        <p th:if="${provider.description}" th:text="${provider.description}"></p>
+        <p class="muted">
+            Appointment length: <b th:text="${provider.slotMinutes} + ' min'"></b> &middot;
+            Time zone: <b th:text="${provider.zoneId}"></b>
+        </p>
+    </div>
+
+
+    <h2>1. Pick a day</h2>
+    <div class="day-strip">
+        <a th:each="d : ${days}"
+           th:href="@{'/' + ${provider.slug}(date=${d})}"
+           th:classappend="${d == selectedDate} ? 'active' : ''">
+            <span th:text="${#temporals.format(d, 'EEE')}">Mon</span><br>
+            <b th:text="${#temporals.format(d, 'dd MMM')}">01 Jan</b>
+        </a>
+    </div>
+
+    <form th:action="@{'/' + ${provider.slug} + '/book'(date=${selectedDate})}" th:object="${form}" method="post">
+        <div class="alert error" th:if="${#fields.hasGlobalErrors()}">
+            <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
+        </div>
+
+        <h2>2. Pick a time</h2>
+        <p class="muted" th:if="${slots.isEmpty()}">No free slots for this day. Please choose another date.</p>
+        <div class="slot-grid" th:unless="${slots.isEmpty()}">
+            <label class="slot" th:each="entry : ${slots}">
+                <input type="radio" th:field="*{start}" th:value="${entry.key}" required>
+                <span th:text="${entry.value}">09:00</span>
+            </label>
+        </div>
+
+        <h2 style="margin-top:26px">3. Your details</h2>
+        <div class="card">
+            <div class="grid grid-2">
+                <div>
+                    <label for="customerName">Full name *</label>
+                    <input type="text" id="customerName" th:field="*{customerName}">
+                    <div class="error-text" th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}"></div>
+                </div>
+                <div>
+                    <label for="customerPhone">Phone (WhatsApp) *</label>
+                    <input type="text" id="customerPhone" th:field="*{customerPhone}" placeholder="+20 100 000 0000">
+                    <div class="error-text" th:if="${#fields.hasErrors('customerPhone')}" th:errors="*{customerPhone}"></div>
+                </div>
+            </div>
+            <label for="customerEmail">E-mail (for the confirmation)</label>
+            <input type="email" id="customerEmail" th:field="*{customerEmail}">
+            <div class="error-text" th:if="${#fields.hasErrors('customerEmail')}" th:errors="*{customerEmail}"></div>
+
+            <label for="notes">Reason for the visit (optional)</label>
+            <textarea id="notes" rows="3" th:field="*{notes}"></textarea>
+
+            <button class="btn" type="submit" th:disabled="${slots.isEmpty()}">Confirm booking</button>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script>
+    document.querySelectorAll('.slot input').forEach(function (input) {
+        input.addEventListener('change', function () {
+            document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+            if (input.checked) input.closest('.slot').classList.add('selected');
+        });
+        if (input.checked) input.closest('.slot').classList.add('selected');
+    });
+</script>
+</body>
+</html>
